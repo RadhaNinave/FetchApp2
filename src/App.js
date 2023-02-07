@@ -53,11 +53,27 @@ function App() {
     const data = await response.json();
     console.log(data);
   }
+  
+  async function deleteMovieHandler(id){
+    try{
+    const response = await fetch(`https://react-movies-app-93087-default-rtdb.firebaseio.com/movies.json/${id}`,{
+      method:'DELETE',
+      headers:{
+        'Content-Type' : 'application/json'
+      }
+    })
+
+    const data = await  response.json();
+    fetchMoviesHandler();
+  }catch(error){
+    console.log(error.message)
+  }
+  }
 
   let content = <p>Found no movies.</p>;
 
   if (movies.length > 0) {
-    content = <MoviesList movies={movies} />;
+    content = <MoviesList onClick={deleteMovieHandler} movies={movies} />;
   }
 
   if (error) {
